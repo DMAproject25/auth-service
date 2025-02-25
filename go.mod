@@ -1,4 +1,4 @@
-module github.com/alexKudryavtsev-web/default-service
+module github.com/DMAproject25/auth-service
 
 go 1.22.4
 
