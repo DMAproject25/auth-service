@@ -10,7 +10,7 @@ definitions:
 info:
   contact: {}
   description: default-service
-  title: alexKudryavtsev-web/default-service
+  title: github.com/DMAproject25/auth-service
   version: "1.0"
 paths:
   /healthz:
@@ -91,6 +91,73 @@ paths:
       summary: Get todo by id
       tags:
       - todos
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      operationId: create-user
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.doSaveTodoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Create user
+      tags:
+      - users
+  /users/:
+    get:
+      consumes:
+      - application/json
+      description: Get all users
+      operationId: get-all-users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Get all users
+      tags:
+      - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user by id
+      operationId: get-user-by-id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Get user by id
+      tags:
+      - users
 schemes:
 - https
 - http

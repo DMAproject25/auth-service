@@ -80,7 +80,7 @@ func (t *UserRepo) GetUserByID(ctx context.Context, id uint64) (*entity.User, er
 
 func (t *UserRepo) SaveUser(ctx context.Context, email string) error {
 	query, args, err := t.Builder.
-		Insert("todos").
+		Insert("users").
 		Columns("email").
 		Values(email).
 		ToSql()

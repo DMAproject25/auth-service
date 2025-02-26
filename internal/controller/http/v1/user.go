@@ -24,15 +24,15 @@ func newUserRoutes(handler *gin.RouterGroup, logger logger.Interface, userUseCas
 	handler.POST("/user", r.doSaveUser)
 }
 
-// @Summary     Get all toos
-// @Description Get all todos
-// @ID          get-all-todos
-// @Tags  	    todos
+// @Summary     Get all users
+// @Description Get all users
+// @ID          get-all-users
+// @Tags  	    users
 // @Accept      json
 // @Success     200
 // @Failure     500
 // @Produce     json
-// @Router      /todos/ [get]
+// @Router      /users/ [get]
 func (t *userRoutes) doGetAllUsers(ctx *gin.Context) {
 	users, err := t.u.Users(ctx.Request.Context())
 
@@ -46,18 +46,18 @@ func (t *userRoutes) doGetAllUsers(ctx *gin.Context) {
 	})
 }
 
-// @Summary     Get todo by id
-// @Description Get todo by id
-// @ID          get-todo-by-id
-// @Tags  	    todos
-// @Param       id   path      int  true  "Todo ID"
+// @Summary     Get user by id
+// @Description Get user by id
+// @ID          get-user-by-id
+// @Tags  	    users
+// @Param       id   path      int  true  "User ID"
 // @Accept      json
 // @Success     200
 // @Failure     400
 // @Failure     404
 // @Failure     500
 // @Produce     json
-// @Router      /todos/{id} [get]
+// @Router      /users/{id} [get]
 // @Security    BearerAuth
 func (t *userRoutes) doGetUserByID(ctx *gin.Context) {
 	id := ctx.Param("id")
@@ -86,27 +86,27 @@ type doSaveUserRequest struct {
 	User string `json:"email" binding:"required"`
 }
 
-// @Summary     Create todo
-// @Description Create todo
-// @ID          create-todo
-// @Tags  	    todos
+// @Summary     Create user
+// @Description Create user
+// @ID          create-user
+// @Tags  	    users
 // @Param 			request body doSaveTodoRequest true "query params"
 // @Accept      json
 // @Success     200
 // @Failure     500
 // @Produce     json
-// @Router      /todos [post]
+// @Router      /user [post]
 func (t *userRoutes) doSaveUser(ctx *gin.Context) {
 	var request doSaveUserRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		t.l.Error(err, "http - v1 - doSaveTodo")
+		t.l.Error(err, "http - v1 - doSaveUser")
 		errorResponse(ctx, http.StatusBadRequest, "invalid request body")
 
 		return
 	}
 
 	if err := t.u.SaveUser(ctx.Request.Context(), request.User); err != nil {
-		t.l.Error(err, "http - v1 - doSaveTodo")
+		t.l.Error(err, "http - v1 - doSaveUser")
 		errorResponse(ctx, http.StatusInternalServerError, "internal service problems")
 
 		return

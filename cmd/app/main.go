@@ -1,4 +1,4 @@
-// @title           alexKudryavtsev-web/default-service
+// @title           github.com/DMAproject25/auth-service
 // @version         1.0
 // @description     default-service
 
