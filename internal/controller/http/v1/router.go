@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter(handler *gin.Engine, logger logger.Interface, todoUseCase usecase.Todos) {
+func NewRouter(handler *gin.Engine, logger logger.Interface, todoUseCase usecase.Todos, userUseCase usecase.Users) {
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
 
@@ -14,4 +14,5 @@ func NewRouter(handler *gin.Engine, logger logger.Interface, todoUseCase usecase
 
 	newCommonRoutes(router)
 	newTodosRoutes(router, logger, todoUseCase)
+	newUserRoutes(router, logger, userUseCase)
 }

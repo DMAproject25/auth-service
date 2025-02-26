@@ -19,3 +19,17 @@ type (
 		SaveTodo(ctx context.Context, task string) error
 	}
 )
+
+type (
+	Users interface {
+		Users(ctx context.Context) ([]entity.User, error)
+		UserByID(ctx context.Context, id uint64) (*entity.User, error)
+		SaveUser(ctx context.Context, email string) error
+	}
+
+	UserRepo interface {
+		GetAllUsers(ctx context.Context) ([]entity.User, error)
+		GetUserByID(ctx context.Context, id uint64) (*entity.User, error)
+		SaveUser(ctx context.Context, email string) error
+	}
+)
