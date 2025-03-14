@@ -34,7 +34,7 @@ func Run(cfg *config.Config) {
 	todosUseCase := usecase.NewTodosUseCase(todosRepo)
 
 	userRepo := repo.NewUserRepo(pg)
-	userUseCase := usecase.NewUserUseCase(userRepo)
+	userUseCase := usecase.NewUserUseCase(userRepo, cfg.JWT.Sceret, cfg.JWT.TTL)
 
 	handler := gin.New()
 	v1.NewRouter(handler, logger, todosUseCase, userUseCase)

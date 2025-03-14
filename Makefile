@@ -33,7 +33,7 @@ migrate-up: ### UNIVERSAL: migration up
 .PHONY: migrate-up
 
 generate-docs: ### DEVELOPMENT: generate API docs
-	./bin/swag init -g cmd/app/main.go
+	C:/Users/Admin/go/bin/swag init -g cmd/app/main.go
 .PHONY: generate-docs
 
 mock: ### DEVELOPMENT: run mockgen

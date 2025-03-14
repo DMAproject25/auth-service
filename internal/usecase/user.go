@@ -4,19 +4,25 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/DMAproject25/auth-service/internal/entity"
+	"github.com/DMAproject25/auth-service/pkg/jwt"
 )
 
 type UserUseCase struct {
-	repo UserRepo
+	repo      UserRepo
+	secret    string
+	token_TTL time.Duration
 }
 
 var _ Users = (*UserUseCase)(nil)
 
-func NewUserUseCase(repo UserRepo) *UserUseCase {
+func NewUserUseCase(repo UserRepo, secret string, token_TTL time.Duration) *UserUseCase {
 	return &UserUseCase{
 		repo,
+		secret,
+		token_TTL,
 	}
 }
 
@@ -26,7 +32,7 @@ func (t *UserUseCase) SaveUser(ctx context.Context, email string) error {
 	if err != nil {
 		return fmt.Errorf("can't save user: %w", err)
 	}
-
+	
 	return nil
 }
 
@@ -51,4 +57,17 @@ func (t *UserUseCase) Users(ctx context.Context) ([]entity.User, error) {
 	}
 
 	return users, nil
+}
+
+func (u *UserUseCase) doToken(userId uint64) (string, error) {
+	payload := map[string]any{
+		"uid": userId,
+	}
+
+	token, err := jwt.NewToken(payload, u.secret, u.token_TTL)
+	if err != nil {
+		return "", fmt.Errorf("can't generate token: %w", err)
+	}
+
+	return token, nil
 }

@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
 )
@@ -12,6 +13,7 @@ type (
 		HTTP HTTP `yaml:"http"`
 		Log  Log  `yaml:"logger"`
 		PG   PG   `yaml:"postgres"`
+		JWT  JWT  `yaml:"jwt"`
 	}
 
 	HTTP struct {
@@ -20,12 +22,17 @@ type (
 
 	Log struct {
 		Level       string `yaml:"level"`
-		Destination string `yaml:"destination" env:"LOG_DESTINATION"`		
+		Destination string `yaml:"destination" env:"LOG_DESTINATION"`
 	}
 
 	PG struct {
 		PoolMax int    `yaml:"pool_max" env:"PG_POOL_MAX"`
 		URL     string `yaml:"pg_url" env:"PG_URL"`
+	}
+
+	JWT struct {
+		Sceret string        `yaml:"secret" env:"Secret"`
+		TTL    time.Duration `yaml:"ttl" env:"Tll"`
 	}
 )
 

@@ -7,3 +7,8 @@ logger:
 
 postgres:
   pool_max: 2
+
+jwt:
+  ttl: 24h
+
+
