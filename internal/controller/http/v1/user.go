@@ -112,5 +112,21 @@ func (t *userRoutes) doSaveUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, nil)
+	user, err := t.u.UserByEmail(ctx.Request.Context(), request.User)
+	if err != nil {
+		t.l.Error(err, "http - v1 - get user after save")
+		errorResponse(ctx, http.StatusInternalServerError, "could not fetch user after saving")
+		return
+	}
+
+	token, err := t.u.GenerateToken(user.ID)
+	if err != nil {
+		t.l.Error(err, "http - v1 - token generation failed")
+		errorResponse(ctx, http.StatusInternalServerError, "failed to generate token")
+		return
+	}
+
+	ctx.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
+	})
 }

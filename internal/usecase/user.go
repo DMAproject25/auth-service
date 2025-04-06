@@ -32,7 +32,7 @@ func (t *UserUseCase) SaveUser(ctx context.Context, email string) error {
 	if err != nil {
 		return fmt.Errorf("can't save user: %w", err)
 	}
-	
+
 	return nil
 }
 
@@ -59,7 +59,19 @@ func (t *UserUseCase) Users(ctx context.Context) ([]entity.User, error) {
 	return users, nil
 }
 
-func (u *UserUseCase) doToken(userId uint64) (string, error) {
+func (t *UserUseCase) UserByEmail(ctx context.Context, email string) (*entity.User, error) {
+	user, err := t.repo.GetUserByEmail(ctx, email)
+	if errors.Is(err, entity.ErrUserNotFound) {
+		return nil, err
+	}
+	if err != nil {
+		return nil, fmt.Errorf("can't get user by email: %w", err)
+	}
+
+	return user, nil
+}
+
+func (u *UserUseCase) GenerateToken(userId uint64) (string, error) {
 	payload := map[string]any{
 		"uid": userId,
 	}

@@ -25,11 +25,14 @@ type (
 		Users(ctx context.Context) ([]entity.User, error)
 		UserByID(ctx context.Context, id uint64) (*entity.User, error)
 		SaveUser(ctx context.Context, email string) error
+		UserByEmail(ctx context.Context, email string) (*entity.User, error)
+		GenerateToken(userID uint64) (string, error)
 	}
 
 	UserRepo interface {
 		GetAllUsers(ctx context.Context) ([]entity.User, error)
 		GetUserByID(ctx context.Context, id uint64) (*entity.User, error)
+		GetUserByEmail(ctx context.Context, email string) (*entity.User, error)
 		SaveUser(ctx context.Context, email string) error
 	}
 )

@@ -94,3 +94,30 @@ func (t *UserRepo) SaveUser(ctx context.Context, email string) error {
 
 	return nil
 }
+
+func (t *UserRepo) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
+	query, args, err := t.Builder.
+		Select("id", "email").
+		From("users").
+		Where(squirrel.Eq{"email": email}).
+		ToSql()
+
+	if err != nil {
+		return nil, fmt.Errorf("can't create sql query: %w", err)
+	}
+
+	row := t.Pool.QueryRow(ctx, query, args...)
+
+	result := entity.User{}
+
+	err = row.Scan(&result.ID, &result.Email)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return nil, entity.ErrUserNotFound
+		}
+
+		return nil, fmt.Errorf("can't scan row: %w", err)
+	}
+
+	return &result, nil
+}
